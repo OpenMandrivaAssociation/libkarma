@@ -17,6 +17,7 @@ BuildRoot: 	%{_tmppath}/%name-root
 BuildRequires: mono-devel
 BuildRequires: taglib-devel
 BuildRequires: libusb-devel
+BuildRequires: zlib-devel
 Requires: dkms-omfs
 Requires: %libname >= %version
 
