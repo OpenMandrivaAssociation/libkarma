@@ -1,29 +1,45 @@
+%define major 0
+%define libname %mklibname karma %major
+
 Summary:   	Rio Karma tools
 Name:      	libkarma
-Version:   	0.0.6
+Version:   	0.1.0
 Release:   	%mkrel 1
 License:   	GPL
 Group:     	System/Libraries
-Url:	   	http://linux-karma.sourceforge.net/
-Source:   	http://downloads.sourceforge.net/linux-karma/libkarma-%{version}.tar.bz2
+Url:	   	http://www.freakysoft.de/html/libkarma/
+Source:   	http://www.freakysoft.de/html/libkarma/libkarma-%{version}.tar.bz2
 Source1: http://bobcopeland.com/karma/banshee/20-rio-karma.fdi
 Source2: http://bobcopeland.com/karma/banshee/preferences.fdi
 Source3: http://bobcopeland.com/karma/banshee/multimedia-player-rio-karma.png
+Source4: karma-sharp.dll.config
 BuildRoot: 	%{_tmppath}/%name-root
 BuildRequires: mono-devel
 BuildRequires: taglib-devel
 BuildRequires: libusb-devel
 Requires: dkms-omfs
+Requires: %libname >= %version
 
 %description
 Rio Karma access library
 
-%package devel
-Summary:   	Rio Karma tools
-Group:     	Development/C
+%package -n %libname
+Summary: Rio Karma access library
+Group: System/Libraries
 
-%description devel
-Rio Karma tools
+%description -n %libname
+Rio Karma access library
+
+
+%package -n %libname-devel
+Summary:   	Rio Karma development files
+Group:     	Development/C
+Requires: %libname = %version
+Provides: %name-devel = %version-%release
+Obsoletes: %name-devel
+
+%description -n %libname-devel
+Rio Karma development files
 
 
 %package -n karma-sharp
@@ -42,9 +58,9 @@ Rio Karma C# bindings
 make PREFIX=$RPM_BUILD_ROOT/%_prefix
 
 %install
-rm -rf $RPM_BUILD_ROOT
+rm -rf $RPM_BUILD_ROOT installed-docs
 mkdir -p $RPM_BUILD_ROOT
-make install PREFIX=$RPM_BUILD_ROOT/%_prefix
+make install PREFIX=$RPM_BUILD_ROOT/%_prefix CHOWNPROG=/bin/true CHGRPPROG=/bin/true
 perl -pi -e "s^%buildroot^^" %buildroot%_prefix/lib/pkgconfig/karma-sharp.pc
 %if %_lib != lib
 mv %buildroot%_prefix/lib %buildroot%_libdir
@@ -65,6 +81,13 @@ device, as it doesn't know about the Karma's proprietary filesystem.
 
 EOF
 
+install -m 644 %SOURCE4 %buildroot%_libdir/karma-sharp/karma-sharp.dll.config
+
+mv %buildroot%_datadir/doc/libkarma installed-docs
+
+%post -n %libname -p /sbin/ldconfig
+%postun -n %libname -p /sbin/ldconfig
+
 %post
 %update_icon_cache hicolor
 %postun
@@ -75,20 +98,24 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-,root,root)
-%doc ChangeLog COPYING INSTALL THANKS TODO README.urpmi
+%doc installed-docs/* README.urpmi
 %config(noreplace) %_sysconfdir/hal/fdi/information/20-rio-karma.fdi
 %config(noreplace) %_sysconfdir/hal/fdi/policy/preferences.fdi
 %_bindir/riocp
 %_bindir/chprop
-%_bindir/playlist_show
-%_libdir/libkarma.so
+%_mandir/man1/*.1*
 %attr(4755,root,root) %_bindir/karma_helper
 %_datadir/icons/hicolor/32x32/devices/multimedia-player-rio-karma.png
 
-%files devel
+%files -n %libname
+%defattr(-,root,root)
+%_libdir/libkarma.so.%{major}*
+
+%files -n %libname-devel
 %defattr(-,root,root)
 %_includedir/*
 %_libdir/libkarma.a
+%_libdir/libkarma.so
 
 %files -n karma-sharp
 %defattr(-,root,root)
