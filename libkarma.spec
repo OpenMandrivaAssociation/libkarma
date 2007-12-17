@@ -13,7 +13,6 @@ Source1: http://bobcopeland.com/karma/banshee/20-rio-karma.fdi
 Source2: http://bobcopeland.com/karma/banshee/preferences.fdi
 Source3: http://bobcopeland.com/karma/banshee/multimedia-player-rio-karma.png
 Source4: karma-sharp.dll.config
-BuildRoot: 	%{_tmppath}/%name-root
 BuildRequires: mono-devel
 BuildRequires: taglib-devel
 BuildRequires: libusb-devel
