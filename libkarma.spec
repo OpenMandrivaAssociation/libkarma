@@ -87,8 +87,12 @@ install -m 644 %SOURCE4 %buildroot%_libdir/karma-sharp/karma-sharp.dll.config
 
 mv %buildroot%_datadir/doc/libkarma installed-docs
 
+%if %mdkversion < 200900
 %post -n %libname -p /sbin/ldconfig
+%endif
+%if %mdkversion < 200900
 %postun -n %libname -p /sbin/ldconfig
+%endif
 
 %post
 %update_icon_cache hicolor
