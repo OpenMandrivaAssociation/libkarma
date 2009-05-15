@@ -4,8 +4,8 @@
 Summary:   	Rio Karma tools
 Name:      	libkarma
 Version:   	0.1.0
-Release:   	%mkrel 4
-License:   	GPL
+Release:   	%mkrel 5
+License:   	GPLv2+
 Group:     	System/Libraries
 Url:	   	http://www.freakysoft.de/html/libkarma/
 Source:   	http://www.freakysoft.de/html/libkarma/libkarma-%{version}.tar.bz2
@@ -18,7 +18,6 @@ BuildRequires: mono-devel
 BuildRequires: taglib-devel
 BuildRequires: libusb-devel
 BuildRequires: zlib-devel
-Requires: dkms-omfs
 Requires: %libname >= %version
 %define _requires_exceptions libkarma
 
