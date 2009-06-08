@@ -3,13 +3,12 @@
 
 Summary:   	Rio Karma tools
 Name:      	libkarma
-Version:   	0.1.0
-Release:   	%mkrel 5
+Version:   	0.1.1
+Release:   	%mkrel 1
 License:   	GPLv2+
 Group:     	System/Libraries
 Url:	   	http://www.freakysoft.de/html/libkarma/
-Source:   	http://www.freakysoft.de/html/libkarma/libkarma-%{version}.tar.bz2
-Source1: http://bobcopeland.com/karma/banshee/20-rio-karma.fdi
+Source:   	http://www.freakysoft.de/libkarma/libkarma-%{version}.tar.gz
 Source2: http://bobcopeland.com/karma/banshee/preferences.fdi
 Source3: http://bobcopeland.com/karma/banshee/multimedia-player-rio-karma.png
 Source4: karma-sharp.dll.config
@@ -69,7 +68,7 @@ perl -pi -e "s^/lib^/%_lib^" %buildroot%_libdir/pkgconfig/karma-sharp.pc
 %endif
 
 
-install -m 644 -D %SOURCE1 %buildroot%_sysconfdir/hal/fdi/information/20-rio-karma.fdi
+install -m 644 -D libkarma.fdi %buildroot%_sysconfdir/hal/fdi/information/20-rio-karma.fdi
 install -m 644 -D %SOURCE2 %buildroot%_sysconfdir/hal/fdi/policy/preferences.fdi
 install -m 644 -D %SOURCE3 %buildroot%_datadir/icons/hicolor/32x32/devices/multimedia-player-rio-karma.png
 
@@ -83,8 +82,6 @@ device, as it doesn't know about the Karma's proprietary filesystem.
 EOF
 
 install -m 644 %SOURCE4 %buildroot%_libdir/karma-sharp/karma-sharp.dll.config
-
-mv %buildroot%_datadir/doc/libkarma installed-docs
 
 %if %mdkversion < 200900
 %post -n %libname -p /sbin/ldconfig
@@ -103,7 +100,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-,root,root)
-%doc installed-docs/* README.urpmi
+%doc THANKS TODO README.urpmi
 %config(noreplace) %_sysconfdir/hal/fdi/information/20-rio-karma.fdi
 %config(noreplace) %_sysconfdir/hal/fdi/policy/preferences.fdi
 %_bindir/riocp
