@@ -3,8 +3,8 @@
 
 Summary:   	Rio Karma tools
 Name:      	libkarma
-Version:   	0.1.1
-Release:   	%mkrel 2
+Version:   	0.1.2
+Release:   	%mkrel 1
 License:   	GPLv2+
 Group:     	System/Libraries
 Url:	   	http://www.freakysoft.de/html/libkarma/
