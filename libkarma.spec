@@ -55,12 +55,12 @@ Rio Karma C# bindings
 %setup -q -n libkarma-%{version}
 
 %build
-make PREFIX=$RPM_BUILD_ROOT/%_prefix
+make PREFIX=%{buildroot}/%_prefix
 
 %install
-rm -rf $RPM_BUILD_ROOT installed-docs
-mkdir -p $RPM_BUILD_ROOT
-make install PREFIX=$RPM_BUILD_ROOT/%_prefix CHOWNPROG=/bin/true CHGRPPROG=/bin/true
+rm -rf %{buildroot} installed-docs
+mkdir -p %{buildroot}
+make install PREFIX=%{buildroot}/%_prefix CHOWNPROG=/bin/true CHGRPPROG=/bin/true
 perl -pi -e "s^%buildroot^^" %buildroot%_prefix/lib/pkgconfig/karma-sharp.pc
 %if %_lib != lib
 mv %buildroot%_prefix/lib %buildroot%_libdir
@@ -96,7 +96,7 @@ install -m 644 %SOURCE4 %buildroot%_libdir/karma-sharp/karma-sharp.dll.config
 %clean_icon_cache hicolor
 
 %clean
-rm -rf $RPM_BUILD_ROOT
+rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root)
