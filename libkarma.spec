@@ -4,21 +4,20 @@
 Summary:   	Rio Karma tools
 Name:      	libkarma
 Version:   	0.1.2
-Release:   	%mkrel 2
+Release:   	3
 License:   	GPLv2+
 Group:     	System/Libraries
-Url:	   	http://www.freakysoft.de/html/libkarma/
-Source:   	http://www.freakysoft.de/libkarma/libkarma-%{version}.tar.gz
-Source2: http://bobcopeland.com/karma/banshee/preferences.fdi
-Source3: http://bobcopeland.com/karma/banshee/multimedia-player-rio-karma.png
-Source4: karma-sharp.dll.config
-BuildRoot: 	%{_tmppath}/%name-root
-BuildRequires: mono-devel
-BuildRequires: taglib-devel
-BuildRequires: libusb-devel
-BuildRequires: zlib-devel
-Requires: %libname >= %version
-%define _requires_exceptions libkarma
+Url:	   	http://www.freakysoft.de/libkarma/
+Source0:   	http://www.freakysoft.de/libkarma/libkarma-%{version}.tar.gz
+Source2:	http://bobcopeland.com/karma/banshee/preferences.fdi
+Source3:	http://bobcopeland.com/karma/banshee/multimedia-player-rio-karma.png
+Source4:	karma-sharp.dll.config
+BuildRequires:	mono-devel
+BuildRequires:	taglib-devel
+BuildRequires:	libusb-devel
+BuildRequires:	zlib-devel
+Requires:	%libname >= %version
+%define __noautoreq 'libkarma'
 
 %description
 Rio Karma access library
@@ -34,9 +33,8 @@ Rio Karma access library
 %package -n %libname-devel
 Summary:   	Rio Karma development files
 Group:     	Development/C
-Requires: %libname = %version
-Provides: %name-devel = %version-%release
-Obsoletes: %name-devel
+Requires:	%libname = %version
+Provides:	%name-devel = %{EVRD}
 
 %description -n %libname-devel
 Rio Karma development files
@@ -45,7 +43,7 @@ Rio Karma development files
 %package -n karma-sharp
 Summary:   	Rio Karma C# bindings
 Group:     	Development/Other
-Requires: %name = %version
+Requires:	%name = %version
 
 %description -n karma-sharp
 Rio Karma C# bindings
@@ -83,23 +81,10 @@ EOF
 
 install -m 644 %SOURCE4 %buildroot%_libdir/karma-sharp/karma-sharp.dll.config
 
-%if %mdkversion < 200900
-%post -n %libname -p /sbin/ldconfig
-%endif
-%if %mdkversion < 200900
-%postun -n %libname -p /sbin/ldconfig
-%endif
-
-%post
-%update_icon_cache hicolor
-%postun
-%clean_icon_cache hicolor
-
-%clean
-rm -rf %{buildroot}
+# Drop double slash
+sed -i 's%//usr%/usr%' %buildroot%_libdir/pkgconfig/karma-sharp.pc
 
 %files
-%defattr(-,root,root)
 %doc THANKS TODO README.urpmi
 %config(noreplace) %_sysconfdir/hal/fdi/information/20-rio-karma.fdi
 %config(noreplace) %_sysconfdir/hal/fdi/policy/preferences.fdi
@@ -110,18 +95,72 @@ rm -rf %{buildroot}
 %_datadir/icons/hicolor/32x32/devices/multimedia-player-rio-karma.png
 
 %files -n %libname
-%defattr(-,root,root)
 %_libdir/libkarma.so.%{major}*
 
 %files -n %libname-devel
-%defattr(-,root,root)
 %_includedir/*
 %_libdir/libkarma.a
 %_libdir/libkarma.so
 
 %files -n karma-sharp
-%defattr(-,root,root)
 %_libdir/karma-sharp/*
 %_libdir/pkgconfig/karma-sharp.pc
 
+
+
+
+%changelog
+* Sat Apr 23 2011 Götz Waschk <waschk@mandriva.org> 0.1.2-1mdv2011.0
++ Revision: 657324
+- update to new version 0.1.2
+
+* Tue Mar 16 2010 Oden Eriksson <oeriksson@mandriva.com> 0.1.1-2mdv2011.0
++ Revision: 520874
+- rebuilt for 2010.1
+
+* Mon Jun 08 2009 Götz Waschk <waschk@mandriva.org> 0.1.1-1mdv2010.0
++ Revision: 383902
+- new version
+- use upstream fdi file
+
+* Fri May 15 2009 Götz Waschk <waschk@mandriva.org> 0.1.0-5mdv2010.0
++ Revision: 376115
+- update license
+- drop dep on dkms-omfs
+
+* Fri Jul 25 2008 Thierry Vignaud <tv@mandriva.org> 0.1.0-4mdv2009.0
++ Revision: 248840
+- rebuild
+
+  + Pixel <pixel@mandriva.com>
+    - do not call ldconfig in %%post/%%postun, it is now handled by filetriggers
+
+* Tue Mar 11 2008 Götz Waschk <waschk@mandriva.org> 0.1.0-2mdv2008.1
++ Revision: 185026
+- fix automatic deps of karma-sharp
+
+* Wed Jan 02 2008 Olivier Blin <oblin@mandriva.com> 0.1.0-1mdv2008.1
++ Revision: 140924
+- restore BuildRoot
+
+  + Thierry Vignaud <tv@mandriva.org>
+    - kill re-definition of %%buildroot on Pixel's request
+
+* Sat May 19 2007 Götz Waschk <waschk@mandriva.org> 0.1.0-1mdv2008.0
++ Revision: 28467
+- fix buildrequires
+- new version
+- new URL
+- split out library package
+- add dll mapping for karma-sharp
+
+
+* Wed Dec 13 2006 Götz Waschk <waschk@mandriva.org> 0.0.6-1mdv2007.0
++ Revision: 96209
+- add README.urpmi about fstab setup
+- add icon
+- Import libkarma
+
+* Wed Dec 13 2006 Götz Waschk <waschk@mandriva.org> 0.0.6-1mdv2007.1
+- initial package
 
