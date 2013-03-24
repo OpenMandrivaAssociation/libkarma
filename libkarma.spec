@@ -4,7 +4,7 @@
 Summary:   	Rio Karma tools
 Name:      	libkarma
 Version:   	0.1.2
-Release:   	3
+Release:   	4
 License:   	GPLv2+
 Group:     	System/Libraries
 Url:	   	http://www.freakysoft.de/libkarma/
@@ -12,12 +12,12 @@ Source0:   	http://www.freakysoft.de/libkarma/libkarma-%{version}.tar.gz
 Source2:	http://bobcopeland.com/karma/banshee/preferences.fdi
 Source3:	http://bobcopeland.com/karma/banshee/multimedia-player-rio-karma.png
 Source4:	karma-sharp.dll.config
+Source100:	%name.rpmlintrc
 BuildRequires:	mono-devel
 BuildRequires:	taglib-devel
 BuildRequires:	libusb-devel
 BuildRequires:	zlib-devel
-Requires:	%libname >= %version
-%define __noautoreq 'libkarma'
+Requires:	%libname = %version-%release
 
 %description
 Rio Karma access library
@@ -33,7 +33,7 @@ Rio Karma access library
 %package -n %libname-devel
 Summary:   	Rio Karma development files
 Group:     	Development/C
-Requires:	%libname = %version
+Requires:	%libname = %version-%release
 Provides:	%name-devel = %{EVRD}
 
 %description -n %libname-devel
@@ -43,7 +43,7 @@ Rio Karma development files
 %package -n karma-sharp
 Summary:   	Rio Karma C# bindings
 Group:     	Development/Other
-Requires:	%name = %version
+Requires:	%name = %version-%release
 
 %description -n karma-sharp
 Rio Karma C# bindings
@@ -53,12 +53,12 @@ Rio Karma C# bindings
 %setup -q -n libkarma-%{version}
 
 %build
-make PREFIX=%{buildroot}/%_prefix
+make PREFIX=%{buildroot}/%_prefix CC="%__cc"
 
 %install
 rm -rf %{buildroot} installed-docs
 mkdir -p %{buildroot}
-make install PREFIX=%{buildroot}/%_prefix CHOWNPROG=/bin/true CHGRPPROG=/bin/true
+make install PREFIX=%{buildroot}/%_prefix CHOWNPROG=/bin/true CHGRPPROG=/bin/true CC="%__cc"
 perl -pi -e "s^%buildroot^^" %buildroot%_prefix/lib/pkgconfig/karma-sharp.pc
 %if %_lib != lib
 mv %buildroot%_prefix/lib %buildroot%_libdir
@@ -83,6 +83,9 @@ install -m 644 %SOURCE4 %buildroot%_libdir/karma-sharp/karma-sharp.dll.config
 
 # Drop double slash
 sed -i 's%//usr%/usr%' %buildroot%_libdir/pkgconfig/karma-sharp.pc
+
+# Workaround for chprop, riocp and karma_helper all getting the same build-id
+%__strip %buildroot%_bindir/riocp %buildroot%_bindir/chprop
 
 %files
 %doc THANKS TODO README.urpmi

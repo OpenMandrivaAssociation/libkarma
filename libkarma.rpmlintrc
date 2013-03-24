@@ -1,0 +1,2 @@
+# Need to figure out why this happens, probably related to weird build system
+addFilter("E: debuginfo-without-sources")
