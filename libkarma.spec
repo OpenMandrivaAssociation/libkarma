@@ -13,6 +13,7 @@ Source0:	http://www.freakysoft.de/libkarma/%{name}-%{version}.tar.gz
 Source2:	http://bobcopeland.com/karma/banshee/preferences.fdi
 Source3:	http://bobcopeland.com/karma/banshee/multimedia-player-rio-karma.png
 Source4:	karma-sharp.dll.config
+Source100:	libkarma.rpmlintrc
 
 BuildRequires:	pkgconfig(libusb)
 BuildRequires:	pkgconfig(mono)
