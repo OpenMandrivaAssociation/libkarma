@@ -5,7 +5,7 @@
 Summary:	Rio Karma tools
 Name:		libkarma
 Version:	0.1.2
-Release:	4
+Release:	5
 License:	GPLv2+
 Group:		System/Libraries
 Url:		http://www.freakysoft.de/libkarma/
@@ -36,6 +36,7 @@ Summary:	Rio Karma development files
 Group:		Development/C
 Requires:	%{libname} = %{version}-%{release}
 Provides:	%{name}-devel = %{version}-%{release}
+Obsoletes:	%{_lib}karma0-devel < 0.1.2-5
 
 %description -n %{devname}
 Rio Karma development files
