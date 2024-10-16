@@ -8,7 +8,7 @@ Version:	0.1.2
 Release:	15
 License:	GPLv2+
 Group:		System/Libraries
-Url:		http://www.freakysoft.de/libkarma/
+Url:		https://www.freakysoft.de/libkarma/
 Source0:	http://www.freakysoft.de/libkarma/%{name}-%{version}.tar.gz
 Source2:	http://bobcopeland.com/karma/banshee/preferences.fdi
 Source3:	http://bobcopeland.com/karma/banshee/multimedia-player-rio-karma.png
