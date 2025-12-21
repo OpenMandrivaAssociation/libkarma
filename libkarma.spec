@@ -15,6 +15,7 @@ Source3:	http://bobcopeland.com/karma/banshee/multimedia-player-rio-karma.png
 Source4:	karma-sharp.dll.config
 Source100:	libkarma.rpmlintrc
 
+BuildRequires:	make
 BuildRequires:	pkgconfig(libusb)
 BuildRequires:	pkgconfig(mono)
 BuildRequires:	pkgconfig(taglib)
